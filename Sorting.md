@@ -11,7 +11,7 @@ So sorting just by swapping values is an important part of sorting algorithms.
 Here are the list of sorting algorithm:
 1. Selection Sort
 2. Insertion Sort
-3. Shall Sort
+3. Shell Sort
 4. Quick Sort
 5. Merge Sort
 6. Radix Sort
@@ -89,6 +89,96 @@ public class SelectionSortDemo {
       
       // Display the sorted contents of the array
       System.out.println("SORTED: " + Arrays.toString(numbers));
+   }
+}
+```
+
+### Insertion Sort
+description: The insertionSort() method has one parameter, numbers, which is an unsorted array of elements. The array is sorted in place.
+
+The index variable i denotes the starting position of the current element in the unsorted part. Initially, the first element (i.e., element at index 0) is assumed to be sorted, so the outer for loop assigns i with 1 to begin. The inner while loop inserts the current element into the sorted part by repeatedly swapping the current element with the elements in the array's sorted part that are larger. Once a smaller or equal element is found in the array's sorted part, the current element has been inserted in the correct location and the while loop terminates.
+
+#### Example Code
+```
+import java.util.Arrays;
+
+public class InsertionSortDemo {
+   private static void insertionSort(int[] numbers) {
+      for (int i = 1; i < numbers.length; i++) {
+         int j = i;
+         while (j > 0 && numbers[j] < numbers[j - 1]) {
+            // Swap numbers[j] and numbers [j - 1]
+            int temp = numbers[j];
+            numbers[j] = numbers[j - 1];
+            numbers[j - 1] = temp;
+            j--;
+         }
+      }
+   }
+
+   public static void main(String[] args) {
+      // Create an array of numbers to sort
+      int[] numbers = { 10, 2, 78, 4, 45, 32, 7, 11 };
+      
+      // Display the contents of the array
+      System.out.println("UNSORTED: " + Arrays.toString(numbers));
+      
+      // Call the insertionSort method
+      insertionSort(numbers);
+      
+      // Display the sorted contents of the array
+      System.out.println("SORTED: " + Arrays.toString(numbers));
+   }
+}
+```
+
+### Shell Sort
+#### Shell sort's interleaved lists
+Shell sort is a sorting algorithm that treats the input as a collection of interleaved lists, and sorts each list individually with a variant of the insertion sort algorithm. Shell sort uses gap values to determine the number of interleaved lists. A gap value is a positive integer representing the distance between elements in an interleaved list. For each interleaved list, if an element is at index i, the next element is at index i + gap value.
+
+Shell sort begins by choosing a gap value K and sorting K interleaved lists in place. Shell sort finishes by performing a standard insertion sort on the entire array. Because the interleaved parts have already been sorted, smaller elements will be close to the array's beginning and larger elements towards the end. Insertion sort can then quickly sort the nearly-sorted array.
+
+Any positive integer gap value can be chosen. In the case that the array size is not evenly divisible by the gap value, some interleaved lists will have fewer items than others.
+
+#### Insertion sort for interleaved lists
+If a gap value of K is chosen, creating K entirely new lists would be computationally expensive. Instead of creating new lists, shell sort sorts interleaved lists in-place with a variation of the insertion sort algorithm. The insertion sort algorithm variant redefines the concept of "next" and "previous" items. For an item at index X, the next item is at X + K, instead of X + 1, and the previous item is at X - K instead of X - 1.
+
+#### Shell sort algorithm
+Shell sort begins by picking an arbitrary collection of gap values. For each gap value K, K calls are made to the insertion sort variant function to sort K interleaved lists. Shell sort ends with a final gap value of 1, to finish with the regular insertion sort.
+
+Shell sort tends to perform well when choosing gap values in descending order. A common option is to choose powers of 2 minus 1, in descending order. Ex: For an array of size 100, gap values would be 63, 31, 15, 7, 3, and 1. This gap selection technique results in shell sort's time complexity being no worse than O(N^(3/2)).
+
+Using gap values that are powers of 2 or in descending order is not required. Shell sort will correctly sort arrays using any positive integer gap values in any order, provided a gap value of 1 is included.
+
+#### Example Code
+```
+void insertionSortInterleaved(int[] numbers, int startIndex, int gap) {
+   for (int i = startIndex + gap; i < numbers.length; i += gap) {
+      int j = i;
+      while (j - gap >= startIndex && numbers[j] < numbers[j - gap]) {
+         // Swap numbers[j] and numbers [j - gap]
+         int temp = numbers[j];
+         numbers[j] = numbers[j - gap];
+         numbers[j - gap] = temp;
+         j -= gap;
+      }
+   }
+}
+```
+#### Shell Sort Algorithm
+The shellSort() method calls the insertionSortInterleaved() method repeatedly using different gap sizes and start indices. Ex: If a gapValue is 3, then shellSort() will execute:
+
+insertionSortInterleaved(numbers, 0, 3)
+insertionSortInterleaved(numbers, 1, 3)
+insertionSortInterleaved(numbers, 2, 3)
+All values from zero to gap - 1 are used as startIndex. This process repeats for all gap values. The shellSort() method takes as parameters the array to be sorted, and the array of gap values to be used.
+Here's an example code.
+```
+void shellSort(int[] numbers, int[] gapValues) {
+   for (int g = 0; g < gapValues.length; g++) {
+      for (int i = 0; i < gapValues[g]; i++) {
+         insertionSortInterleaved(numbers, i, gapValues[g]);
+      }
    }
 }
 ```
