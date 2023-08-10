@@ -188,6 +188,9 @@ public class QuicksortDemo {
 Merge sort is a sorting algorithm that divides a list into two halves, recursively sorts each half, and then merges the sorted halves to produce a sorted list. 
 The recursive partitioning continues until a list of 1 element is reached, as a list of 1 element is already sorted.
 
+<img width="968" alt="Screenshot 2023-08-10 at 3 31 41 PM" src="https://github.com/CanDoJaewon/Data-Structures-and-Algorithm/assets/124026092/0b90a7aa-2712-48ba-8652-47d44b8e9ca6">
+
+
 **The process:**
 1. MergeSort recursively divides the list into two halves.
 2. The list is divided until a list of 1 element is found.
